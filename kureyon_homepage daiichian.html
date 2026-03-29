@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>訪問看護ステーションくれよん</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red:    #FF6B6B;
+    --yellow: #FFD93D;
+    --green:  #6BCB77;
+    --blue:   #4D96FF;
+    --purple: #C77DFF;
+    --orange: #FF9A3C;
+    --cream:  #FFFBF0;
+    --dark:   #2D2D2D;
+    --mid:    #555555;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(255,251,240,0.92);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 40px;
+    border-bottom: 3px solid var(--dark);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: var(--dark);
+    text-decoration: none;
+  }
+
+  .nav-logo .crayons {
+    display: flex;
+    gap: 3px;
+  }
+
+  .nav-logo .crayon {
+    width: 8px;
+    height: 28px;
+    border-radius: 4px 4px 2px 2px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--dark);
+    position: relative;
+    padding-bottom: 3px;
+    transition: color 0.2s;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 3px;
+    border-radius: 2px;
+    background: var(--red);
+    transition: width 0.25s;
+  }
+
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-cta {
+    background: var(--red);
+    color: #fff !important;
+    padding: 10px 22px;
+    border-radius: 50px;
+    font-weight: 800 !important;
+    border: 2px solid var(--dark);
+    box-shadow: 3px 3px 0 var(--dark);
+    transition: transform 0.15s, box-shadow 0.15s !important;
+  }
+
+  .nav-cta:hover {
+    transform: translate(-2px,-2px);
+    box-shadow: 5px 5px 0 var(--dark) !important;
+  }
+
+  .nav-cta::after { display: none !important; }
+
+  /* ===== HERO ===== */
+  #hero {
+    min-height: 100vh;
+    padding: 120px 60px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-dots {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, #d0c9b8 1px, transparent 1px);
+    background-size: 28px 28px;
+    opacity: 0.5;
+    z-index: 0;
+  }
+
+  .hero-content { position: relative; z-index: 1; }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--yellow);
+    border: 2px solid var(--dark);
+    border-radius: 50px;
+    padding: 6px 18px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    margin-bottom: 24px;
+    box-shadow: 3px 3px 0 var(--dark);
+    animation: badgePop 0.6s cubic-bezier(.36,1.6,.5,1) both;
+  }
+
+  @keyframes badgePop {
+    from { transform: scale(0.6); opacity:0; }
+    to   { transform: scale(1);    opacity:1; }
+  }
+
+  .hero-title {
+    font-size: clamp(2.4rem, 4vw, 3.6rem);
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    animation: slideUp 0.7s 0.1s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  .hero-title .highlight {
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero-title .highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 4px; left: -4px; right: -4px;
+    height: 14px;
+    background: var(--yellow);
+    z-index: -1;
+    border-radius: 4px;
+    transform: rotate(-1deg);
+  }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: var(--mid);
+    margin-bottom: 36px;
+    animation: slideUp 0.7s 0.2s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity:0; }
+    to   { transform: translateY(0);    opacity:1; }
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    animation: slideUp 0.7s 0.3s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 30px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 800;
+    border: 2.5px solid var(--dark);
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .btn:hover {
+    transform: translate(-3px,-3px);
+    box-shadow: 5px 5px 0 var(--dark);
+  }
+
+  .btn-primary { background: var(--red); color: #fff; box-shadow: 4px 4px 0 var(--dark); }
+  .btn-secondary { background: #fff; color: var(--dark); box-shadow: 4px 4px 0 var(--dark); }
+
+  /* Hero illustration area */
+  .hero-visual {
+    position: relative;
+    z-index: 1;
+    animation: slideUp 0.8s 0.15s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  .hero-card-stack {
+    position: relative;
+    height: 420px;
+  }
+
+  .hcard {
+    position: absolute;
+    background: #fff;
+    border: 3px solid var(--dark);
+    border-radius: 24px;
+    padding: 28px;
+    width: 280px;
+  }
+
+  .hcard-main {
+    top: 20px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    box-shadow: 6px 6px 0 var(--dark);
+  }
+
+  .hcard-left {
+    top: 80px; left: 0;
+    z-index: 2;
+    transform: rotate(-6deg);
+    background: var(--blue);
+    color: #fff;
+    box-shadow: 4px 4px 0 var(--dark);
+  }
+
+  .hcard-right {
+    top: 90px; right: 0;
+    z-index: 2;
+    transform: rotate(5deg);
+    background: var(--green);
+    box-shadow: 4px 4px 0 var(--dark);
+  }
+
+  .hcard-emoji { font-size: 2.8rem; margin-bottom: 12px; display: block; }
+  .hcard-label { font-size: 0.75rem; font-weight: 700; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.05em; }
+  .hcard-value { font-size: 1.1rem; font-weight: 800; margin-top: 4px; }
+
+  .floating-tag {
+    position: absolute;
+    background: var(--yellow);
+    border: 2.5px solid var(--dark);
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    box-shadow: 3px 3px 0 var(--dark);
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+  }
+
+  .tag-24h { top: 0; right: 60px; background: var(--orange); animation-delay: 0s; }
+  .tag-osaka { bottom: 40px; left: 20px; background: var(--purple); color: #fff; animation-delay: 1.2s; }
+  .tag-mental { bottom: 10px; right: 30px; background: var(--green); animation-delay: 0.6s; }
+
+  /* ===== SECTION BASE ===== */
+  section { padding: 100px 60px; }
+
+  .section-label {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 50px;
+    border: 2px solid var(--dark);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 900;
+    margin-bottom: 16px;
+    line-height: 1.25;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+    color: var(--mid);
+    line-height: 1.9;
+    max-width: 600px;
+    margin-bottom: 56px;
+  }
+
+  /* ===== ABOUT / PHILOSOPHY ===== */
+  #about {
+    background: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .philosophy-block {
+    background: var(--cream);
+    border: 3px solid var(--dark);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 6px 6px 0 var(--dark);
+    position: relative;
+  }
+
+  .philosophy-block::before {
+    content: '"';
+    position: absolute;
+    top: -20px; left: 20px;
+    font-size: 6rem;
+    font-weight: 900;
+    color: var(--yellow);
+    line-height: 1;
+    font-family: 'Nunito', sans-serif;
+  }
+
+  .philosophy-text {
+    font-size: 1.05rem;
+    line-height: 2;
+    color: var(--dark);
+    font-weight: 500;
+    margin-top: 20px;
+  }
+
+  .crayon-colors {
+    display: flex;
+    gap: 10px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+
+  .color-chip {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 3px solid var(--dark);
+    box-shadow: 3px 3px 0 var(--dark);
+    transition: transform 0.2s;
+    cursor: pointer;
+  }
+
+  .color-chip:hover { transform: scale(1.2) rotate(15deg); }
+
+  .about-right .section-label { background: var(--green); }
+
+  .mission-list { list-style: none; margin-top: 28px; }
+
+  .mission-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 2px dashed #ddd;
+  }
+
+  .mission-icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    border: 2.5px solid var(--dark);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    box-shadow: 2px 2px 0 var(--dark);
+  }
+
+  .mission-text { font-size: 0.95rem; line-height: 1.7; font-weight: 500; }
+
+  /* ===== SERVICES ===== */
+  #services {
+    background: var(--cream);
+  }
+
+  .services-header { text-align: center; }
+  .services-header .section-label { background: var(--blue); color: #fff; }
+  .services-header .section-desc { margin: 0 auto 56px; }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .service-card {
+    background: #fff;
+    border: 3px solid var(--dark);
+    border-radius: 24px;
+    padding: 36px 28px;
+    box-shadow: 5px 5px 0 var(--dark);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-card:hover {
+    transform: translate(-4px,-4px);
+    box-shadow: 9px 9px 0 var(--dark);
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+  }
+
+  .sc-1::before { background: var(--red); }
+  .sc-2::before { background: var(--blue); }
+  .sc-3::before { background: var(--green); }
+  .sc-4::before { background: var(--yellow); }
+  .sc-5::before { background: var(--purple); }
+  .sc-6::before { background: var(--orange); }
+
+  .service-emoji { font-size: 2.8rem; margin-bottom: 16px; display: block; }
+  .service-name { font-size: 1.1rem; font-weight: 900; margin-bottom: 10px; }
+  .service-desc { font-size: 0.88rem; color: var(--mid); line-height: 1.8; }
+
+  /* ===== FLOW ===== */
+  #flow {
+    background: var(--dark);
+    color: #fff;
+  }
+
+  #flow .section-label { background: var(--yellow); color: var(--dark); }
+  #flow .section-title { color: #fff; }
+  #flow .section-desc { color: rgba(255,255,255,0.65); }
+
+  .flow-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+    margin-top: 56px;
+  }
+
+  .flow-step {
+    text-align: center;
+    position: relative;
+    padding: 0 20px;
+  }
+
+  .flow-step:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -16px; top: 40px;
+    font-size: 1.8rem;
+    color: var(--yellow);
+    font-weight: 900;
+  }
+
+  .step-num {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    font-weight: 900;
+    font-family: 'Nunito', sans-serif;
+    margin: 0 auto 20px;
+    position: relative;
+  }
+
+  .step-num.s1 { background: var(--red); }
+  .step-num.s2 { background: var(--blue); }
+  .step-num.s3 { background: var(--green); }
+  .step-num.s4 { background: var(--yellow); color: var(--dark); }
+
+  .step-icon { font-size: 1.8rem; }
+  .step-title { font-size: 1rem; font-weight: 800; margin-bottom: 10px; }
+  .step-desc { font-size: 0.83rem; color: rgba(255,255,255,0.6); line-height: 1.7; }
+
+  /* ===== INFO ===== */
+  #info {
+    background: #fff;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  #info .section-label { background: var(--orange); }
+
+  .info-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+
+  .info-table tr { border-bottom: 2px solid #eee; }
+  .info-table tr:last-child { border-bottom: none; }
+
+  .info-table th {
+    text-align: left;
+    padding: 16px 12px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: var(--mid);
+    width: 35%;
+    vertical-align: top;
+  }
+
+  .info-table td {
+    padding: 16px 12px;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    font-weight: 500;
+  }
+
+  .access-map {
+    background: var(--cream);
+    border: 3px solid var(--dark);
+    border-radius: 24px;
+    padding: 36px;
+    box-shadow: 5px 5px 0 var(--dark);
+  }
+
+  .access-map h3 { font-size: 1.1rem; font-weight: 900; margin-bottom: 20px; }
+
+  .access-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .access-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ===== CONTACT ===== */
+  #contact {
+    background: var(--cream);
+    text-align: center;
+  }
+
+  #contact .section-label { background: var(--red); color: #fff; }
+  #contact .section-desc { margin: 0 auto 48px; }
+
+  .contact-card {
+    max-width: 640px;
+    margin: 0 auto;
+    background: #fff;
+    border: 3px solid var(--dark);
+    border-radius: 32px;
+    padding: 56px 48px;
+    box-shadow: 8px 8px 0 var(--dark);
+  }
+
+  .contact-phone {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    font-family: 'Nunito', sans-serif;
+    color: var(--red);
+    letter-spacing: 0.02em;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-decoration: none; /* リンクの下線を消す */
+  }
+
+  .contact-sub {
+    font-size: 0.88rem;
+    color: var(--mid);
+    margin-bottom: 36px;
+  }
+
+  .contact-hours {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+
+  .hour-badge {
+    background: var(--cream);
+    border: 2px solid var(--dark);
+    border-radius: 12px;
+    padding: 12px 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    box-shadow: 3px 3px 0 var(--dark);
+  }
+
+  .hour-badge span { display: block; font-size: 0.75rem; color: var(--mid); font-weight: 500; margin-bottom: 2px; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--dark);
+    color: #fff;
+    padding: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .footer-logo {
+    font-size: 1.1rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .footer-crayons {
+    display: flex;
+    gap: 4px;
+  }
+
+  .footer-crayon {
+    width: 8px; height: 24px;
+    border-radius: 4px 4px 2px 2px;
+  }
+
+  footer p { font-size: 0.8rem; color: rgba(255,255,255,0.45); }
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width: 900px) {
+    nav { padding: 14px 24px; }
+    .nav-links { display: none; }
+    #hero { grid-template-columns: 1fr; padding: 120px 28px 60px; }
+    .hero-visual { display: none; }
+    .about-inner { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .flow-steps { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .flow-step::after { display: none; }
+    .info-grid { grid-template-columns: 1fr; }
+    section { padding: 72px 28px; }
+    footer { padding: 40px 28px; flex-direction: column; text-align: center; }
+  }
+
+  @media(max-width: 560px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .contact-card { padding: 36px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="crayons">
+      <div class="crayon" style="background:var(--red)"></div>
+      <div class="crayon" style="background:var(--yellow)"></div>
+      <div class="crayon" style="background:var(--green)"></div>
+      <div class="crayon" style="background:var(--blue)"></div>
+    </div>
+    訪問看護ステーション<br>くれよん
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">私たちについて</a></li>
+    <li><a href="#services">サービス</a></li>
+    <li><a href="#flow">ご利用の流れ</a></li>
+    <li><a href="#info">事業所情報</a></li>
+    <li><a href="#contact" class="nav-cta">お問い合わせ</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg-dots"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🎨 精神科に特化した訪問看護</div>
+    <h1 class="hero-title">
+      あなたの色で、<br>
+      <span class="highlight">自分らしく</span><br>
+      生きていける。
+    </h1>
+    <p class="hero-desc">
+      訪問看護ステーションくれよんは、<br>
+      大阪府下全域を対象に、精神科に特化した<br>
+      訪問看護を提供しています。<br>
+      一人ひとりの個性＝「色」を大切に、<br>
+      心を込めたケアをお届けします。
+    </p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn btn-primary">📞 まずは相談する</a>
+      <a href="#services" class="btn btn-secondary">サービスを見る →</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card-stack">
+      <div class="floating-tag tag-24h">🌙 24時間対応</div>
+      <div class="hcard hcard-left">
+        <span class="hcard-emoji">🧠</span>
+        <div class="hcard-label">専門分野</div>
+        <div class="hcard-value">精神科に特化</div>
+      </div>
+      <div class="hcard hcard-main">
+        <span class="hcard-emoji">🩺</span>
+        <div class="hcard-label">スタッフ数</div>
+        <div class="hcard-value">看護師 7名体制</div>
+      </div>
+      <div class="hcard hcard-right">
+        <span class="hcard-emoji">📍</span>
+        <div class="hcard-label">対応エリア</div>
+        <div class="hcard-value">大阪府下全域</div>
+      </div>
+      <div class="floating-tag tag-osaka">📍 大阪府下全域</div>
+      <div class="floating-tag tag-mental">🧠 精神科専門</div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="about-inner">
+    <div class="about-left">
+      <div class="philosophy-block">
+        <div class="philosophy-text">
+          くれよんには様々な色があります。<br>
+          その様々な色（個性）を使い、自分の絵を描いていただき、
+          自分にしかない色でキャンバスを好きなように描く…<br><br>
+          <strong>それが、私たちの願いです。</strong>
+        </div>
+        <div class="crayon-colors">
+          <div class="color-chip" style="background:var(--red)" title="あなたの赤"></div>
+          <div class="color-chip" style="background:var(--orange)" title="あなたのオレンジ"></div>
+          <div class="color-chip" style="background:var(--yellow)" title="あなたの黄色"></div>
+          <div class="color-chip" style="background:var(--green)" title="あなたの緑"></div>
+          <div class="color-chip" style="background:var(--blue)" title="あなたの青"></div>
+          <div class="color-chip" style="background:var(--purple)" title="あなたの紫"></div>
+        </div>
+      </div>
+    </div>
+    <div class="about-right">
+      <div class="section-label">私たちの理念</div>
+      <h2 class="section-title">ひとりひとりの「色」を<br>大切にしたケアを</h2>
+      <ul class="mission-list">
+        <li class="mission-item">
+          <div class="mission-icon" style="background:var(--red)">❤️</div>
+          <div class="mission-text">安心・安全で信頼できる、質の高い看護を提供します</div>
+        </li>
+        <li class="mission-item">
+          <div class="mission-icon" style="background:var(--blue)">🤝</div>
+          <div class="mission-text">利用者様の個性を尊重し、自分らしい生活を支援します</div>
+        </li>
+        <li class="mission-item">
+          <div class="mission-icon" style="background:var(--green)">📚</div>
+          <div class="mission-text">定期的な勉強会・研修で、スタッフ一同自己研鑽に励みます</div>
+        </li>
+        <li class="mission-item">
+          <div class="mission-icon" style="background:var(--yellow)">🌏</div>
+          <div class="mission-text">地域社会への貢献と、健康維持・促進を目指します</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="services-header">
+    <div class="section-label">サービス内容</div>
+    <h2 class="section-title">こんなお悩み、<br>お任せください</h2>
+    <p class="section-desc">乳児から高齢者まで、いかなる医療ケアにも対応。<br>精神科に特化した専門的なケアをご提供します。</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card sc-1">
+      <span class="service-emoji">🌡️</span>
+      <div class="service-name">健康チェック</div>
+      <p class="service-desc">体温・血圧・脈拍などのバイタル測定、日常生活状況の確認と記録を行います。</p>
+    </div>
+    <div class="service-card sc-2">
+      <span class="service-emoji">💊</span>
+      <div class="service-name">お薬の管理・相談</div>
+      <p class="service-desc">服薬確認・指導、飲み忘れ時の対応など、薬に関するサポートをいたします。</p>
+    </div>
+    <div class="service-card sc-3">
+      <span class="service-emoji">🧠</span>
+      <div class="service-name">精神科看護</div>
+      <p class="service-desc">精神疾患に特化した専門的な看護ケア。不安・悩み・心配事のご相談にも丁寧に対応します。</p>
+    </div>
+    <div class="service-card sc-4">
+      <span class="service-emoji">🏠</span>
+      <div class="service-name">在宅生活支援</div>
+      <p class="service-desc">住み慣れたご自宅での生活が続けられるよう、日常生活全般をサポートします。</p>
+    </div>
+    <div class="service-card sc-5">
+      <span class="service-emoji">🔗</span>
+      <div class="service-name">多職種連携</div>
+      <p class="service-desc">主治医・ケアマネジャー・行政機関などと連携し、包括的なケアを実現します。</p>
+    </div>
+    <div class="service-card sc-6">
+      <span class="service-emoji">👨‍👩‍👧</span>
+      <div class="service-name">家族へのサポート</div>
+      <p class="service-desc">ご家族への介護方法の指導、不安・悩みの相談対応など、家族全体を支えます。</p>
+    </div>
+  </div>
+</section>
+
+<section id="flow">
+  <div class="section-label">ご利用の流れ</div>
+  <h2 class="section-title">はじめての方もご安心を。<br>気軽にご相談ください！</h2>
+  <p class="section-desc">主治医への相談が難しい場合も、直接ステーションへご連絡いただけます。</p>
+  <div class="flow-steps">
+    <div class="flow-step">
+      <div class="step-num s1">1</div>
+      <div class="step-title">ご相談・お問い合わせ</div>
+      <p class="step-desc">まずはお電話やメールでお気軽にご相談ください。主治医の先生でもOK！</p>
+    </div>
+    <div class="flow-step">
+      <div class="step-num s2">2</div>
+      <div class="step-title">アセスメント訪問</div>
+      <p class="step-desc">看護師がご自宅にお伺いし、現在の状況をお聞きします。</p>
+    </div>
+    <div class="flow-step">
+      <div class="step-num s3">3</div>
+      <div class="step-title">ケアプランの作成</div>
+      <p class="step-desc">ご本人・ご家族のご希望を尊重した、個別のケアプランを作成します。</p>
+    </div>
+    <div class="flow-step">
+      <div class="step-num s4">4</div>
+      <div class="step-title">訪問看護スタート！</div>
+      <p class="step-desc">いよいよ訪問看護の開始。安心してお任せください🎨</p>
+    </div>
+  </div>
+</section>
+
+<section id="info">
+  <div class="info-grid">
+    <div>
+      <div class="section-label">事業所情報</div>
+      <h2 class="section-title">ステーション<br>くれよんについて</h2>
+      <table class="info-table">
+        <tr>
+          <th>事業所名</th>
+          <td>訪問看護ステーションくれよん</td>
+        </tr>
+        <tr>
+          <th>所在地</th>
+          <td>大阪市東住吉区矢田２丁目１−２２　シティーハイツ公園東９０１</td>
+        </tr>
+        <tr>
+          <th>対応エリア</th>
+          <td>大阪府下全域</td>
+        </tr>
+        <tr>
+          <th>電話番号</th>
+          <td>06-4700-7904</td>
+        </tr>
+        <tr>
+          <th>FAX番号</th>
+          <td>06-4700-1904</td>
+        </tr>
+        <tr>
+          <th>営業時間</th>
+          <td>月曜〜土曜 9:00〜18:00<br>（12月30日〜1月3日を除く）</td>
+        </tr>
+        <tr>
+          <th>緊急対応</th>
+          <td>24時間対応（緊急時）</td>
+        </tr>
+        <tr>
+          <th>スタッフ</th>
+          <td>男性看護師2名・女性看護師5名（常勤）</td>
+        </tr>
+        <tr>
+          <th>専門分野</th>
+          <td>精神科訪問看護</td>
+        </tr>
+      </table>
+    </div>
+    <div class="access-map">
+      <h3>🗺️ アクセス・お問い合わせ</h3>
+      <div class="access-item">
+        <span class="access-icon">📍</span>
+        <div>大阪市東住吉区矢田２丁目１−２２<br>シティーハイツ公園東９０１</div>
+      </div>
+      <div class="access-item">
+        <span class="access-icon">📞</span>
+        <div>お電話：06-4700-7904<br>FAX：06-4700-1904</div>
+      </div>
+      <div class="access-item">
+        <span class="access-icon">🚗</span>
+        <div>大阪府下全域へ訪問対応いたします</div>
+      </div>
+      <div class="access-item">
+        <span class="access-icon">🌙</span>
+        <div>緊急時は24時間対応<br>深夜・早朝もご連絡ください</div>
+      </div>
+      <div style="margin-top:28px;">
+        <a href="#contact" class="btn btn-primary" style="display:inline-flex; width:100%; justify-content:center;">
+          お問い合わせはこちら →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-label">お問い合わせ</div>
+  <h2 class="section-title">まずはお気軽に<br>ご相談ください！</h2>
+  <p class="section-desc">「どこに相談すればいいか分からない」という方も大歓迎です。<br>お話を聞かせていただくところからはじめましょう。</p>
+  <div class="contact-card">
+    <a href="tel:06-4700-7904" class="contact-phone">
+      📞 <span>06-4700-7904</span>
+    </a>
+    <p class="contact-sub">FAXでのお問い合わせ：06-4700-1904</p>
+    <div class="contact-hours">
+      <div class="hour-badge">
+        <span>営業時間</span>
+        月〜土 9:00〜18:00
+      </div>
+      <div class="hour-badge">
+        <span>緊急対応</span>
+        24時間・365日
+      </div>
+      <div class="hour-badge">
+        <span>対応エリア</span>
+        大阪府下全域
+      </div>
+    </div>
+    <p style="font-size:0.85rem; color:var(--mid); line-height:1.8;">
+      介護認定を受けている方はケアマネジャーへのご相談でも構いません。<br>
+      主治医の先生からのご紹介も随時受け付けております。
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">
+    <div class="footer-crayons">
+      <div class="footer-crayon" style="background:var(--red)"></div>
+      <div class="footer-crayon" style="background:var(--yellow)"></div>
+      <div class="footer-crayon" style="background:var(--green)"></div>
+      <div class="footer-crayon" style="background:var(--blue)"></div>
+    </div>
+    訪問看護ステーションくれよん
+  </div>
+  <p>© 2025 訪問看護ステーションくれよん All rights reserved.</p>
+</footer>
+
+</body>
+</html>
